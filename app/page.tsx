@@ -18,7 +18,7 @@ export async function generateMetadata({
     other: {
       ...(await fetchMetadata(
         new URL(
-          `/frames?query=${searchParams.query}`,
+          `/frames?query=${searchParams?.query || ""}`,
           vercelURL() || "http://localhost:3000"
         )
       )),

@@ -123,7 +123,10 @@ const frameHandler = frames(async (ctx) => {
           version: "vNext",
         },
       ],
-      state: { counter: counter, results: newResults },
+      // initial frame can't have state
+      ...(ctx.request.method === "POST"
+        ? { state: { counter: counter, results: newResults } }
+        : {}),
     };
   }
   if (!currentResult && newResults.length) {
@@ -149,7 +152,10 @@ const frameHandler = frames(async (ctx) => {
           version: "vNext",
         },
       ],
-      state: { counter: counter, results: newResults },
+      // initial frame can't have state
+      ...(ctx.request.method === "POST"
+        ? { state: { counter: counter, results: newResults } }
+        : {}),
     };
   }
   if (!currentResult) {
@@ -181,7 +187,10 @@ const frameHandler = frames(async (ctx) => {
           version: "vNext",
         },
       ],
-      state: { counter: counter, results: newResults },
+      // initial frame can't have state
+      ...(ctx.request.method === "POST"
+        ? { state: { counter: counter, results: newResults } }
+        : {}),
     };
   }
 
@@ -210,7 +219,7 @@ const frameHandler = frames(async (ctx) => {
                 <div tw="flex font-bold">{currentResult.meta.displayName}</div>{" "}
                 <div tw="flex ml-4">@{currentResult.body.username}</div>
               </div>
-              <div tw="flex mt-4 break-words">
+              <div tw="flex mt-4 [overflow-wrap:anywhere]">
                 {currentResult.body.data.text}
               </div>
               <div tw="flex mt-4 items-end text-slate-400 grow">
@@ -223,7 +232,7 @@ const frameHandler = frames(async (ctx) => {
                       {currentResult.meta.reactions.count}
                     </div>
                   </div>
-                  <div tw="flex mr-4 items-center gap-4">
+                  <div tw="flex mr-4 items-center">
                     <div tw="flex w-10">
                       <RecastIcon />
                     </div>
@@ -294,7 +303,10 @@ const frameHandler = frames(async (ctx) => {
         Open result
       </Button>,
     ],
-    state: { counter: counter, results: newResults },
+    // initial frame can't have state
+    ...(ctx.request.method === "POST"
+      ? { state: { counter: counter, results: newResults } }
+      : {}),
   };
 });
 
