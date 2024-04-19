@@ -1,3 +1,7 @@
+# Search Frame
+
+Uses searchcaster to display a frame that lets you search Farcaster
+
 # Frames.js Starter Kit
 
 This is a boilerplate repo to get started quickly with `frames.js`

@@ -50,6 +50,9 @@ async function fetchSearchResult({
               recasts: { count: next.meta.recasts.count },
               reactions: { count: next.meta.reactions.count },
               numReplyChildren: next.meta.numReplyChildren,
+              replyParentUsername: {
+                username: next.meta.replyParentUsername?.username,
+              },
             },
             body: {
               username: next.body.username,
@@ -95,6 +98,60 @@ const frameHandler = frames(async (ctx) => {
   }
 
   const currentResult = newResults[counter];
+  if (!currentResult && counter === 1) {
+    // errorframe
+    return {
+      image: (
+        <div tw="flex flex-col">
+          <div tw="flex">
+            Couldn't find Farcaster casts that match "{query}"
+          </div>
+        </div>
+      ),
+      buttons: [
+        <Button action="post" target={`?query=${query}`}>
+          Retry
+        </Button>,
+      ],
+      accepts: [
+        {
+          id: "xmtp",
+          version: "vNext",
+        },
+        {
+          id: "farcaster",
+          version: "vNext",
+        },
+      ],
+      state: { counter: counter, results: newResults },
+    };
+  }
+  if (!currentResult && newResults.length) {
+    // errorframe
+    return {
+      image: (
+        <div tw="flex flex-col">
+          <div tw="flex">No more results</div>
+        </div>
+      ),
+      buttons: [
+        <Button action="post" target={`?query=${query}`}>
+          Retry
+        </Button>,
+      ],
+      accepts: [
+        {
+          id: "xmtp",
+          version: "vNext",
+        },
+        {
+          id: "farcaster",
+          version: "vNext",
+        },
+      ],
+      state: { counter: counter, results: newResults },
+    };
+  }
   if (!currentResult) {
     // errorframe
     return {
@@ -104,9 +161,25 @@ const frameHandler = frames(async (ctx) => {
         </div>
       ),
       buttons: [
-        <Button action="post" target={`?q=${query}`}>
+        <Button
+          action="post"
+          target={{ pathname: "/", query: { op: "-", query: query } }}
+        >
+          Prev
+        </Button>,
+        <Button action="post" target={`?query=${query}`}>
           Retry
         </Button>,
+      ],
+      accepts: [
+        {
+          id: "xmtp",
+          version: "vNext",
+        },
+        {
+          id: "farcaster",
+          version: "vNext",
+        },
       ],
       state: { counter: counter, results: newResults },
     };
@@ -115,8 +188,18 @@ const frameHandler = frames(async (ctx) => {
   return {
     image: (
       <div tw="flex flex-col p-8 h-full w-full bg-slate-100">
-        <div tw="flex text-slate-600 text-2xl">Search casts for "{query}"</div>
+        <div tw="flex text-slate-600 text-3xl">
+          Searching Farcaster casts for "{query}"
+        </div>
         <div tw="flex border border-slate-300 p-8 rounded-[20px] my-4 grow flex-col bg-white">
+          {currentResult.meta.replyParentUsername?.username ? (
+            <div tw="flex flex-row mb-6 text-3xl text-slate-500">
+              Replying to{" "}
+              <div tw="flex font-bold ml-2">
+                @{currentResult.meta.replyParentUsername?.username}
+              </div>{" "}
+            </div>
+          ) : null}
           <div tw="flex flex-row grow">
             <img
               src={currentResult.meta.avatar}
@@ -159,7 +242,7 @@ const frameHandler = frames(async (ctx) => {
             </div>
           </div>
         </div>
-        <div tw="flex text-slate-600 text-2xl">
+        <div tw="flex text-slate-600 text-3xl">
           Cast {counter} of{" "}
           {Object.keys(newResults).length >= pageSize
             ? "many"
@@ -181,6 +264,16 @@ const frameHandler = frames(async (ctx) => {
         },
       ],
     },
+    accepts: [
+      {
+        id: "xmtp",
+        version: "vNext",
+      },
+      {
+        id: "farcaster",
+        version: "vNext",
+      },
+    ],
     buttons: [
       <Button
         action="post"

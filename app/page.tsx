@@ -7,13 +7,20 @@ import type { Metadata } from "next";
 import { createDebugUrl } from "./debug";
 import { vercelURL } from "./utils";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}): Promise<Metadata> {
   return {
     title: "frames.js starter",
     description: "This is a frames.js starter template",
     other: {
       ...(await fetchMetadata(
-        new URL("/frames", vercelURL() || "http://localhost:3000")
+        new URL(
+          `/frames?query=${searchParams.query}`,
+          vercelURL() || "http://localhost:3000"
+        )
       )),
     },
   };
