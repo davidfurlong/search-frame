@@ -33,8 +33,11 @@ export default async function Home({ searchParams }: NextServerPageProps) {
   // then, when done, return next frame
   return (
     <div className="p-4">
-      frames.js starter kit. The Template Frame is on this page, it&apos;s in
-      the html meta tags (inspect source).{" "}
+      <a href="https://github.com/davidfurlong/search-frame">
+        Search Frame is MIT Licensed. Source code here.
+      </a>
+      Uses the frames.js starter kit. The Template Frame is on this page,
+      it&apos;s in the html meta tags (inspect source).{" "}
       <Link href={createDebugUrl(url)} className="underline">
         Debug
       </Link>{" "}

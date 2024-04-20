@@ -214,12 +214,12 @@ const frameHandler = frames(async (ctx) => {
               src={currentResult.meta.avatar}
               tw="h-24 w-24 rounded-full mr-6"
             />
-            <div tw="flex flex-col grow">
+            <div tw="flex flex-col grow flex-wrap">
               <div tw="flex flex-row">
                 <div tw="flex font-bold">{currentResult.meta.displayName}</div>{" "}
                 <div tw="flex ml-4">@{currentResult.body.username}</div>
               </div>
-              <div tw="flex mt-4 [overflow-wrap:anywhere]">
+              <div tw="flex mt-4 [overflow-wrap:anywhere] flex-wrap min-w-[0px] flex-shrink">
                 {currentResult.body.data.text}
               </div>
               <div tw="flex mt-4 items-end text-slate-400 grow">
@@ -300,7 +300,7 @@ const frameHandler = frames(async (ctx) => {
         action="link"
         target={`https://warpcast.com/${currentResult.body.username}/${currentResult.merkleRoot}`}
       >
-        Open result
+        Open Cast
       </Button>,
     ],
     // initial frame can't have state
