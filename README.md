@@ -2,6 +2,21 @@
 
 Uses searchcaster to display a frame that lets you search Farcaster
 
+# Todos
+
+- horizontal text overflow bug
+- perf benchmarking/optimization (currently is often hitting 5s timing out)
+  - searchcaster ~3s => could cache or replace this api
+  - server roundtrip ?
+  - cold start serverless ?
+  - image rendering ?
+- Write launch cast text
+  - template for bot
+  - template for frame
+  - template for cast in a frame
+  - searchcaster
+  - search domains
+
 # Frames.js Starter Kit
 
 This is a boilerplate repo to get started quickly with `frames.js`

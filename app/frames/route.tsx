@@ -103,6 +103,32 @@ const frameHandler = frames(async (ctx) => {
     const query = ctx?.searchParams.query ?? "";
     const results = ctx.state.results;
     let newResults = results;
+    if (!query) {
+      // errorframe
+      return {
+        image: (
+          <div tw="flex flex-col">
+            <div tw="flex">
+              Invalid. Empty query. Add a query parameter to the frame url
+            </div>
+          </div>
+        ),
+        accepts: [
+          {
+            id: "xmtp",
+            version: "vNext",
+          },
+          {
+            id: "farcaster",
+            version: "vNext",
+          },
+        ],
+        // initial frame can't have state
+        ...(ctx.request.method === "POST"
+          ? { state: { counter: counter, results: newResults } }
+          : {}),
+      };
+    }
     if (!results[counter]) {
       newResults = await fetchSearchResult({
         q: query,
@@ -224,11 +250,13 @@ const frameHandler = frames(async (ctx) => {
               </div>
             ) : null}
             <div tw="flex flex-row grow">
-              <img
-                src={currentResult.meta.avatar}
-                tw="h-24 w-24 rounded-full mr-6"
-              />
-              <div tw="flex flex-col grow flex-wrap">
+              <div tw="w-1/6 flex">
+                <img
+                  src={currentResult.meta.avatar}
+                  tw="w-36 h-36 rounded-full mr-6"
+                />
+              </div>
+              <div tw="flex flex-col grow flex-wrap w-5/6">
                 <div tw="flex flex-row">
                   <div tw="flex font-bold">
                     {currentResult.meta.displayName}
