@@ -16,7 +16,7 @@ function getTimer(name: string) {
   };
 }
 
-const pageSize = 6;
+const pageSize = 4;
 
 export const runtime = "nodejs";
 
@@ -249,25 +249,27 @@ const frameHandler = frames(async (ctx) => {
                 </div>{" "}
               </div>
             ) : null}
-            <div tw="flex flex-row grow">
+            <div tw="flex flex-row">
               <div tw="w-1/6 flex">
                 <img
                   src={currentResult.meta.avatar}
+                  height="36px"
+                  width="36px"
                   tw="w-36 h-36 rounded-full mr-6"
                 />
               </div>
-              <div tw="flex flex-col grow flex-wrap w-5/6">
+              <div tw="flex flex-col w-5/6">
                 <div tw="flex flex-row">
                   <div tw="flex font-bold">
                     {currentResult.meta.displayName}
                   </div>{" "}
                   <div tw="flex ml-4">@{currentResult.body.username}</div>
                 </div>
-                <div tw="flex mt-4 [overflow-wrap:anywhere] flex-wrap min-w-[0px] flex-shrink">
+                <div tw="flex mt-2 w-full break-all text-3xl">
                   {currentResult.body.data.text}
                 </div>
-                <div tw="flex mt-4 items-end text-slate-400 grow">
-                  <div tw="flex mt-6 items-center text-slate-400">
+                <div tw="flex items-end text-slate-400 grow">
+                  <div tw="flex mt-2 items-center text-slate-400">
                     <div tw="flex mr-4 items-center">
                       <div tw="flex w-10">
                         <LikeIcon />

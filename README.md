@@ -4,7 +4,6 @@ Uses searchcaster to display a frame that lets you search Farcaster
 
 # Todos
 
-- horizontal text overflow bug
 - perf benchmarking/optimization (currently is often hitting 5s timing out)
   - searchcaster ~3s => could cache or replace this api
   - server roundtrip ?
